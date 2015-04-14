@@ -1,7 +1,7 @@
 import requests
 import json
 
-from theExceptions import (CreationError, DeletionError, UpdateError)
+from .theExceptions import (CreationError, DeletionError, UpdateError)
 
 class Document(object) :
 	"""The class that represents a document"""
@@ -44,7 +44,7 @@ class Document(object) :
 		self.setPrivates(fieldDict)
 
 		if self.collection._validation['on_set']:
-			for k in fieldDict.keys() :
+			for k in list(fieldDict.keys()) :
 				self[k] = fieldDict[k]
 		else :
 			self._store.update(fieldDict)
@@ -231,14 +231,14 @@ class Edge(Document) :
 
 		if fromVertice.__class__ is Document :
 			fromId = fromVertice._id
-		elif (type(fromVertice) is types.StringType) or (type(fromVertice) is types.UnicodeType) :
+		elif (type(fromVertice) is bytes) or (type(fromVertice) is str) :
 			fromId = fromVertice
 		else :
 			raise ValueError("fromVertice must be either a Document or a String")
 		
 		if toVertice.__class__ is Document :
 			toId = toVertice._id
-		elif (type(toVertice) is types.StringType) or (type(toVertice) is types.UnicodeType) :
+		elif (type(toVertice) is bytes) or (type(toVertice) is str) :
 			toId = toVertice
 		else :
 			raise ValueError("toVertice must be either a Document or a String")
