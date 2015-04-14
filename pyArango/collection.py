@@ -307,13 +307,11 @@ class Collection(object) :
 		return self.simpleQuery('by-example', rawResults, example = exampleDict, batchSize = batchSize, **queryArgs)
 
 	def fetchFirst(self, count, rawResults = False) :
-		"""exampleDict should be something like {'age' : 28}. returns only a single element but still in a SimpleQuery object.
-		returns count examples ordered by insert/update date, the last one being the first on the list"""
+		"""Returns the first document inserted in a collection"""
 		return self.simpleQuery('first', rawResults = rawResults, count = count)
 
 	def fetchLast(self, count, rawResults = False) :
-		"""exampleDict should be something like {'age' : 28}. returns only a single element but still in a SimpleQuery object.
-		returns count examples ordered by insert/update date, the last one being the first on the list"""
+		"""Returns the last document inserted in a collection"""
 		return self.simpleQuery('last', rawResults = rawResults, count = count)
 
 	def fetchFirstExample(self, exampleDict, rawResults = False) :
@@ -402,6 +400,10 @@ class Collection(object) :
 			return "newborn"
 		else :
 			raise ValueError("The collection has an Unknown status %s" % self.status)
+
+	def __len__(self) :
+		"""returns the number of documents in the collection"""
+		return self.count()
 
 	def __repr__(self) :
 		return "ArangoDB collection name: %s, id: %s, type: %s, status: %s" % (self.name, self.id, self.getType(), self.getStatus())
